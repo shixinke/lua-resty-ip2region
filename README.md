@@ -4,7 +4,7 @@
 
 # Overview
 
-    lua_package_path '/the/path/to/your/project/lib/?.lua';
+        lua_package_path '/the/path/to/your/project/lib/?.lua';
 	lua_shared_dict ip_data 100m;
 
 	server {
@@ -13,16 +13,16 @@
 			content_by_lua_block {
 				local ip2region = require 'resty.ip2region.ip2region';
 				local location = iplocation:new({file = "/the/path/to/your/project/lib/resty/ip2region/ip2region/data/ip2region.db"});
-                local  data = location:search('202.108.22.5');
+                                local  data = location:search('202.108.22.5');
 				--[[
-                  {
+                                 {
 					country = "中国",
-                    region = "华东"
+                                        region = "华东"
 					province = "浙江", 
 					city = "杭州", 
 					isp = "电信"
-                  }
-                --]]
+                                 }
+                               --]]
 			}
 		}
 	}
@@ -64,8 +64,8 @@
            country = "中国",
            region = "华东"
            province = "浙江",
-       	　　city = "杭州",
-       	　　isp = "电信",
+       	　 city = "杭州",
+       	　 isp = "电信",
       
        }
    

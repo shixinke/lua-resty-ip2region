@@ -1,3 +1,9 @@
+--[[
+-- @description : It is a IP location library for openresty
+-- @author : shixinke <ishixinke@qq.com> 
+-- @website : www.shixinke.com
+-- @date : 2018-02-02
+--]]
 local _M = {
     _version = '0.01'
 }
