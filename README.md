@@ -1,10 +1,12 @@
-# lua-resty-iplocation
+# lua-resty-ip2region
 
 根据IP地址定位所在区域的工具函数(IP数据来源于[ip2region](https://github.com/lionsoul2014/ip2region))
 
 # Overview
 
-        lua_package_path '/the/path/to/your/project/lib/?.lua';
+
+
+    lua_package_path '/the/path/to/your/project/lib/?.lua';
 	lua_shared_dict ip_data 100m;
 
 	server {
@@ -12,8 +14,12 @@
 			default_type text/html;
 			content_by_lua_block {
 				local ip2region = require 'resty.ip2region.ip2region';
-				local location = iplocation:new({file = "/the/path/to/your/project/lib/resty/ip2region/ip2region/data/ip2region.db"});
-                                local  data = location:search('202.108.22.5');
+				local location = iplocation:new({
+				    file = "/the/path/to/your/project/lib/resty/ip2region/data/ip2region.db",
+				    dict = "ip_data",
+				    mode = "memory" -- maybe memory,binary or btree
+				});
+                            local  data = location:search('202.108.22.5');
 				--[[
                                  {
 					country = "中国",
@@ -22,7 +28,7 @@
 					city = "杭州", 
 					isp = "电信"
                                  }
-                               --]]
+                           --]]
 			}
 		}
 	}
@@ -32,7 +38,7 @@
 
 ## new
 
-用法:ip2region_obj, err = ip2region:new({path = 'the/path/to/the/data/file', dict = 'shared dict name'})
+用法: ip2region_obj, err = ip2region:new({path = 'the/path/to/the/data/file', dict = 'shared dict name'})
 
 功能：初始化iplocation模块
 
