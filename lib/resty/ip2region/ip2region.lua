@@ -21,6 +21,7 @@ local str_gsub = string.gsub
 local ngx_var = ngx.var
 local math_ceil = math.ceil
 local bit = require 'bit'
+local ngx_null = ngx.null
 
 
 local mt = {
@@ -99,13 +100,21 @@ local function format_region(tab)
     return info
 end
 
+local function is_empty_string(str)
+    if not str or str == '' or str == ngx_null then
+        return true
+    end
+    return false
+end
+
 
 function _M.new(opts)
     opts = opts or {}
     local dict = opts.dict and shdict[opts.dict] or shdict.ip_data
     local file = opts.file or 'lib/resty/ip2region/data/ip2region.db'
+    local root = opts.root or ngx_var.root or ngx_var.document_root
     if substr(file, 1, 1) ~= '/' then
-        file = ngx_var.document_root..'/'..file
+        file = root..'/'..file
     end
     return setmetatable({
         mode = opts.mode or 'memory',
@@ -125,6 +134,9 @@ function _M.new(opts)
 end
 
 function _M.memory_search(self, ip)
+    if is_empty_string(ip) then
+        return nil, 'the IP is empty'
+    end
     local content = self.content
     local err = ''
     if content == nil then
@@ -191,6 +203,9 @@ end
 
 
 function _M.bin_search(self, ip, multi)
+    if is_empty_string(ip) then
+        return nil, 'the IP is empty'
+    end
     if self.fd == nil then
         local fd, err = io_open(self.file, 'r')
         if not fd then
@@ -258,6 +273,9 @@ function _M.bin_search(self, ip, multi)
 end
 
 function _M.btree_search(self, ip, multi)
+    if is_empty_string(ip) then
+        return nil, 'the IP is empty'
+    end
     if self.fd == nil then
         local fd, err = io_open(self.file, 'r')
         if not fd then
@@ -374,6 +392,9 @@ function _M.btree_search(self, ip, multi)
 end
 
 function _M.search(self, ip, multi)
+    if is_empty_string(ip) then
+        return nil, 'the IP is empty'
+    end
     if self.mode == 'memory' then
         return self:memory_search(ip)
     elseif self.mode == 'binary' then
