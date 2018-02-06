@@ -40,7 +40,7 @@
 
 用法: ip2region_obj, err = ip2region:new({file = 'the/path/to/the/data/file', dict = 'shared dict name'})
 
-功能：初始化iplocation模块
+功能：初始化ip2region模块
 
 参数：是一个table，里面有以下选项
      
