@@ -14,21 +14,26 @@
 			default_type text/html;
 			content_by_lua_block {
 				local ip2region = require 'resty.ip2region.ip2region';
-				local location = iplocation:new({
+				local location = ip2region:new({
 				    file = "/the/path/to/your/project/lib/resty/ip2region/data/ip2region.db",
 				    dict = "ip_data",
 				    mode = "memory" -- maybe memory,binary or btree
 				});
-                            local  data = location:search('202.108.22.5');
+                            local  data, err = location:search('202.108.22.5');
 				--[[
                                  {
 					country = "中国",
-                                        region = "华东"
+					region = "华东"
 					province = "浙江", 
 					city = "杭州", 
 					isp = "电信"
                                  }
                            --]]
+			   if (err == nil) then
+			      ngx.say(data['city'])
+                           else
+                              ngx.say(err)
+                           end
 			}
 		}
 	}
