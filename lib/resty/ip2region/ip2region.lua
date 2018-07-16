@@ -207,7 +207,7 @@ function _M.bin_search(self, ip, multi)
         return nil, 'the IP is empty'
     end
     if self.fd == nil then
-        local fd, err = io_open(self.file, 'r')
+        local fd, err = io_open(self.file, 'rb')
         if not fd then
             return nil, err
         end
@@ -277,7 +277,7 @@ function _M.btree_search(self, ip, multi)
         return nil, 'the IP is empty'
     end
     if self.fd == nil then
-        local fd, err = io_open(self.file, 'r')
+        local fd, err = io_open(self.file, 'rb')
         if not fd then
             return nil, err
         end
@@ -413,7 +413,7 @@ function _M.loadfile(self)
     if not path then
         return nil, 'the file path is nil'
     end
-    local fd, err = io_open(path)
+    local fd, err = io_open(path, 'rb')
     if fd == nil then
         return nil, err
     end
