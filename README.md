@@ -20,7 +20,7 @@
 				    dict = "ip_data",
 				    mode = "memory" -- maybe memory,binary or btree
 				});
-                                local  data, err = location:search('202.108.22.5');
+                            local  data, err = location:search('202.108.22.5');
 				--[[
                                   {
 					country = "中国",
@@ -29,12 +29,12 @@
 					city = "杭州", 
 					isp = "电信"
                                    }
-                                --]]
+                            --]]
 			        if (err == nil) then
 			            ngx.say(data['city'])
-                                else
-                                    ngx.say(err)
-                                end
+                            else
+                                ngx.say(err)
+                            end
 			}
 		}
 	}
@@ -78,8 +78,8 @@
            country = "中国",
            region = "华东"
            province = "浙江",
-	   city = "杭州",
-	   isp = "电信",
+	       city = "杭州",
+	       isp = "电信",
       
        }
    
