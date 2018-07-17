@@ -195,7 +195,7 @@ function _M.memory_search(self, ip)
     local ptr = bit.band(ptr, 0x00FFFFFF)
     local tmp = {
         city_id = substr2long(content, ptr + 1),
-        region = substr(content, ptr + 5, ptr + data_len + 1)
+        region = substr(content, ptr + 5, ptr + data_len -1)
     }
     return format_region(tmp)
 end
@@ -261,7 +261,7 @@ function _M.bin_search(self, ip, multi)
     local data_len = bit.band(int_rshift(ptr, 24), 0xFF)
     local ptr = bit.band(ptr, 0x00FFFFFF)
     self.fd:seek('set', ptr)
-    local data = self.fd:read(data_len)
+    local data = self.fd:read(data_len -1)
     local tmp = {
         city_id = substr2long(data, 1),
         region = substr(data, 5)
@@ -299,17 +299,20 @@ function _M.btree_search(self, ip, multi)
             self.headers.length = self.headers.length + 1
             self.headers.idx[self.headers.length] = start_ip
             self.headers.ptr[self.headers.length] = data_ptr
+
         end
     end
     if type(ip) == 'string' then
         ip = ip2long(ip)
     end
 
-    local heads = 1
+    local heads = 0
     local tails = self.headers.length
     local start_ptr = 1
     local end_ptr = 1
+    local t = 0
     while ( heads <= tails ) do
+        t = t + 1
         local mid = int_rshift(heads + tails, 1)
         if ip == self.headers.idx[mid] then
             if mid > 1 then
@@ -322,23 +325,24 @@ function _M.btree_search(self, ip, multi)
             break
         end
 
+
         if ip < self.headers.idx[mid] then
             if mid == 1 then
                 start_ptr = self.headers.ptr[mid]
                 end_ptr = self.headers.ptr[mid + 1]
                 break
-            elseif ip > self.headers.ptr[mid - 1] then
-                start_ptr = self.headers.ptr[mid - 1]
+            elseif ip > self.headers.idx[mid-1] then
+                start_ptr = self.headers.ptr[mid-1]
                 end_ptr = self.headers.ptr[mid]
                 break
             end
             tails = mid - 1
         else
             if mid == self.headers.length then
-                start_ptr = self.headers.ptr[mid -1]
+                start_ptr = self.headers.ptr[mid-1]
                 end_ptr = self.headers.ptr[mid]
                 break
-            elseif ip <= self.headers.ptr[mid + 1] then
+            elseif ip <= self.headers.idx[mid + 1] then
                 start_ptr = self.headers.ptr[mid]
                 end_ptr = self.headers.ptr[mid + 1]
                 break
@@ -380,7 +384,8 @@ function _M.btree_search(self, ip, multi)
     local data_len = bit.band(int_rshift(ptr, 24), 0xFF)
     local ptr = bit.band(ptr, 0x00FFFFFF)
     self.fd:seek('set', ptr)
-    local data = self.fd:read(data_len)
+    local data = self.fd:read(data_len - 1)
+
     local tmp = {
         city_id = substr2long(data, 1),
         region = substr(data, 5)
