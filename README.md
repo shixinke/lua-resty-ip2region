@@ -128,7 +128,7 @@
 
 * 用法:ip_tab,err = location:btree_search(ip)
 
-* 功能：通过btree方法在文件中查找
+* 功能：通过btree方法在文件中查找(通过B树查找)
 
 * 参数：
 
