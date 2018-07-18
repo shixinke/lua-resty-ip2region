@@ -147,9 +147,9 @@
 
 ## close
 
-用法：location:close()
+* 用法：location:close()
 
-功能：关闭文件流
+* 功能：关闭文件流
 
 
 
