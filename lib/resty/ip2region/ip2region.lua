@@ -3,6 +3,7 @@
 -- @author : shixinke <ishixinke@qq.com> 
 -- @website : www.shixinke.com
 -- @date : 2018-02-02
+-- 使用时请下载最新的ip库：https://github.com/lionsoul2014/ip2region/blob/master/data/ip2region.db
 --]]
 local _M = {
     _version = '0.01'
